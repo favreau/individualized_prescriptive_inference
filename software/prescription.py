@@ -38,10 +38,10 @@ def command_line_options():
 
     parser.add_argument('--ml_models', '--ml_models', type=str, default=['logistic_regression', 'extra_trees', 'xgb'], nargs='+', help='sklearn-style classifiers to use')
 
-    parser.add_argument('--use_vae', '--use_vae', type=bool, default=False, help='Use vae representation')
-    parser.add_argument('--use_ae', '--use_ae', type=bool, default=False, help='Use ae representation')
-    parser.add_argument('--use_nmf', '--use_nmf', type=bool, default=True, help='Use nmf representation')
-    parser.add_argument('--use_pca', '--use_pca', type=bool, default=True, help='Use pca representation')
+    parser.add_argument('--use_vae', '--use_vae', action='store_true', default=False, help='Use vae representation')
+    parser.add_argument('--use_ae', '--use_ae', action='store_true', default=False, help='Use ae representation')
+    parser.add_argument('--use_nmf', '--use_nmf', action='store_true', default=False, help='Use nmf representation')
+    parser.add_argument('--use_pca', '--use_pca', action='store_true', default=False, help='Use pca representation')
 
     args = parser.parse_args()
     ground_truth_params = (args.k, args.gene_or_receptor, args.lesion_or_disconnectome, args.lesion_deficit_thresh, args.deficits, args.biasdegree, args.biastype, args.te, args.re)
@@ -640,7 +640,7 @@ def prepare_array_mapping(k,
                           centroids,
                           job_batch=10):
     params = []
-    for K in range(k):
+    for K in k:
         for GENE_OR_RECEPTOR in gene_or_receptor:
             for LESION_OR_DISCONNECTOME, LESION_DEFICIT_THRESH in zip(lesion_or_disconnectome, lesion_deficit_thresh):
                 for BOTTLENECK in bottlenecks:

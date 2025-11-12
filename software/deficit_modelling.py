@@ -89,7 +89,7 @@ def harmonize_columns(main_df, other_dfs_path, latent_list, train_or_test, kf_co
 
     main_df.reset_index(inplace=True, drop=True)
 
-    other_latent_dfs = {dim: get_file(other_dfs_path, f"{train_or_test}_{kf_count}_['{input_type}']_dim_{dim}") for dim in latent_list[1:]}
+    other_latent_dfs = {dim: get_file(other_dfs_path, f"{train_or_test}_{kf_count}_dim_{dim}_['{input_type}']") for dim in latent_list[1:]}
     other_reductions = {REDUCTION: pd.DataFrame() for REDUCTION in reductions}
     for i in trange(len(main_df)):
         img_name = main_df["filename"].iloc[i]
@@ -136,7 +136,10 @@ def run(parameters):
     if run_nmf: reductions_list.append('nmf')
     if run_pca: reductions_list.append('pca')
 
-    roi_stem = os.path.join(os.getcwd(), "../../atlases", "2mm_parcellations")
+    # Get the project root directory (where this script is located)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    roi_stem = os.path.join(project_root, "atlases", "2mm_parcellations")
     roipaths = [os.path.join(roi_stem, name) for name in names]
     for roi_thresh in roi_threshs:
         for input_type in input_types:
